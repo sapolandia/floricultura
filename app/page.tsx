@@ -25,7 +25,7 @@ function createClient() {
 /* =====================================================================
    MAPPERS — converte snake_case do banco para camelCase do app
 ===================================================================== */
-function mapProduct(row) {
+function mapProduct(row: any) {
   return {
     id: row.id,
     nome: row.nome,
@@ -34,10 +34,10 @@ function mapProduct(row) {
     estoqueMinimo: row.estoque_minimo,
   }
 }
-function mapSeller(row) {
+function mapSeller(row: any) {
   return { id: row.id, nome: row.nome, contato: row.contato || '', regiao: row.regiao || '', ativo: row.ativo }
 }
-function mapAllocation(row) {
+function mapAllocation(row: any) {
   return {
     id: row.id,
     vendedorId: row.seller_id,
@@ -48,7 +48,7 @@ function mapAllocation(row) {
     status: row.status,
   }
 }
-function mapSettlement(row) {
+function mapSettlement(row: any) {
   return {
     id: row.id,
     alocacaoId: row.allocation_id,
@@ -69,18 +69,18 @@ function mapSettlement(row) {
 /* =====================================================================
    PRIMITIVOS estilo shadcn (design system local, tema grafite + verde neon)
 ===================================================================== */
-function cn(...parts) { return parts.filter(Boolean).join(" "); }
+function cn(...parts: any[]) { return parts.filter(Boolean).join(" "); }
 
-function Button({ children, variant = "primary", size = "default", className = "", ...props }) {
+function Button({ children, variant = "primary", size = "default", className = "", ...props }: any) {
   const base = "inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all active:scale-95 disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400";
-  const variants = {
+  const variants: Record<string, string> = {
     primary: "bg-emerald-400 text-emerald-950 hover:bg-emerald-300",
     secondary: "bg-white/5 text-zinc-100 hover:bg-white/10 border border-white/10",
     ghost: "text-zinc-400 hover:text-zinc-100 hover:bg-white/5",
     danger: "bg-rose-500 text-white hover:bg-rose-400",
     dangerGhost: "text-rose-400 hover:bg-rose-500/10 border border-rose-500/20",
   };
-  const sizes = { default: "h-11 px-5 text-sm", sm: "h-9 px-3 text-xs", icon: "h-9 w-9", lg: "h-12 px-6 text-sm" };
+  const sizes: Record<string, string> = { default: "h-11 px-5 text-sm", sm: "h-9 px-3 text-xs", icon: "h-9 w-9", lg: "h-12 px-6 text-sm" };
   return (
     <button className={cn(base, variants[variant] || variants.primary, sizes[size] || sizes.default, className)} {...props}>
       {children}
@@ -88,11 +88,11 @@ function Button({ children, variant = "primary", size = "default", className = "
   );
 }
 
-function Label({ className = "", ...props }) {
+function Label({ className = "", ...props }: any) {
   return <label className={cn("text-xs font-medium text-zinc-400", className)} {...props} />;
 }
 
-function Input({ className = "", ...props }) {
+function Input({ className = "", ...props }: any) {
   return (
     <input
       className={cn(
@@ -105,7 +105,7 @@ function Input({ className = "", ...props }) {
   );
 }
 
-function SelectField({ value, onChange, placeholder, children, className = "" }) {
+function SelectField({ value, onChange, placeholder, children, className = "" }: any) {
   return (
     <div className="relative">
       <select
@@ -125,12 +125,12 @@ function SelectField({ value, onChange, placeholder, children, className = "" })
   );
 }
 
-function Card({ children, className = "", ...props }) {
+function Card({ children, className = "", ...props }: any) {
   return <div className={cn("rounded-2xl border border-white/10 bg-white/5", className)} {...props}>{children}</div>;
 }
 
-function Badge({ children, variant = "default", className = "" }) {
-  const variants = {
+function Badge({ children, variant = "default", className = "" }: any) {
+  const variants: Record<string, string> = {
     default: "bg-white/5 text-zinc-300 border border-white/10",
     neon: "bg-emerald-400/15 text-emerald-300 border border-emerald-400/20",
     amber: "bg-amber-400/15 text-amber-300 border border-amber-400/20",
@@ -139,7 +139,7 @@ function Badge({ children, variant = "default", className = "" }) {
   return <span className={cn("inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold", variants[variant], className)}>{children}</span>;
 }
 
-function Stepper({ value, onChange, min = 0, max }) {
+function Stepper({ value, onChange, min = 0, max }: any) {
   const num = Number(value) || 0;
   const dec = () => onChange(Math.max(min, num - 1));
   const inc = () => onChange(max !== undefined ? Math.min(max, num + 1) : num + 1);
@@ -153,10 +153,10 @@ function Stepper({ value, onChange, min = 0, max }) {
   );
 }
 
-function Sheet({ open, onOpenChange, children }) {
+function Sheet({ open, onOpenChange, children }: any) {
   useEffect(() => {
     if (!open) return;
-    function onKey(e) { if (e.key === "Escape") onOpenChange(false); }
+    function onKey(e: any) { if (e.key === "Escape") onOpenChange(false); }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onOpenChange]);
@@ -168,7 +168,7 @@ function Sheet({ open, onOpenChange, children }) {
     </div>
   );
 }
-function SheetContent({ children, className = "" }) {
+function SheetContent({ children, className = "" }: any) {
   return (
     <div className={cn("relative z-10 w-full mt-16 max-h-screen overflow-y-auto rounded-t-3xl border-t border-white/10 bg-zinc-900 p-5 pb-8", className)}>
       <div className="mx-auto mb-5 h-1 w-10 rounded-full bg-white/15" />
@@ -176,7 +176,7 @@ function SheetContent({ children, className = "" }) {
     </div>
   );
 }
-function SheetHeader({ title, subtitle, onClose }) {
+function SheetHeader({ title, subtitle, onClose }: any) {
   return (
     <div className="flex items-start justify-between mb-5 gap-3">
       <div>
@@ -231,8 +231,8 @@ const openAllocTuples = [
 function buildSeedData() {
   const products = productsSeed.map((p) => ({ ...p }));
   const sellers = sellersSeed.map((s) => ({ ...s }));
-  const allocations = [];
-  const settlements = [];
+  const allocations: any[] = [];
+  const settlements: any[] = [];
   settlementsTuples.forEach((t, i) => {
     const allocId = "a" + (i + 1);
     allocations.push({ id: allocId, vendedorId: t.v, produtoId: t.p, quantidade: t.alocada, data: t.data, status: "fechado", precoUnitario: t.preco });
@@ -250,31 +250,31 @@ function buildSeedData() {
   return { products, sellers, allocations, settlements };
 }
 
-function uid(prefix) { return prefix + "-" + Math.random().toString(36).slice(2, 9); }
-function fmtBRL(n) {
+function uid(prefix: any) { return prefix + "-" + Math.random().toString(36).slice(2, 9); }
+function fmtBRL(n: any) {
   const v = Math.round((n || 0) * 100) / 100;
   return "R$ " + v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
-function fmtBRLshort(n) {
+function fmtBRLshort(n: any) {
   const v = n || 0;
   if (v >= 1000) return "R$" + (v / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + "k";
   return "R$" + Math.round(v);
 }
-function fmtDate(iso) { const p = iso.split("-"); return p[2] + "/" + p[1] + "/" + p[0]; }
-function fmtDayMonth(iso) { const p = iso.split("-"); return p[2] + "/" + p[1]; }
+function fmtDate(iso: any) { const p = iso.split("-"); return p[2] + "/" + p[1] + "/" + p[0]; }
+function fmtDayMonth(iso: any) { const p = iso.split("-"); return p[2] + "/" + p[1]; }
 function todayISO() { return new Date().toISOString().split('T')[0]; }
-function stockSeverity(atual, minimo) {
+function stockSeverity(atual: any, minimo: any) {
   if (!minimo || minimo <= 0) return "ok";
   const ratio = atual / minimo;
   if (ratio <= 0.5) return "danger";
   if (ratio < 1) return "warn";
   return "ok";
 }
-function sevVariant(sev) { return sev === "danger" ? "rose" : sev === "warn" ? "amber" : "neon"; }
-function sevLabel(sev) { return sev === "danger" ? "Crítico" : sev === "warn" ? "Baixo" : "OK"; }
-function initials(name) { return name.split(" ").filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase(); }
+function sevVariant(sev: any) { return sev === "danger" ? "rose" : sev === "warn" ? "amber" : "neon"; }
+function sevLabel(sev: any) { return sev === "danger" ? "Crítico" : sev === "warn" ? "Baixo" : "OK"; }
+function initials(name: any) { return name.split(" ").filter(Boolean).slice(0, 2).map((w: any) => w[0]).join("").toUpperCase(); }
 
-function ChartTooltip({ active, payload, label, fmt }) {
+function ChartTooltip({ active, payload, label, fmt }: any) {
   if (!active || !payload || !payload.length) return null;
   return (
     <div className="rounded-xl border border-white/10 bg-zinc-900 px-3 py-2 shadow-xl">
@@ -287,7 +287,7 @@ function ChartTooltip({ active, payload, label, fmt }) {
 /* =====================================================================
    PAINEL
 ===================================================================== */
-function PainelTab({ products, sellers, settlements, alertList }) {
+function PainelTab({ products, sellers, settlements, alertList }: any) {
   const mesAtual = "2026-06";
   const settlementsMes = settlements.filter((s) => s.data.startsWith(mesAtual));
   const faturamentoMes = settlementsMes.reduce((s, x) => s + x.valorRecebido, 0);
@@ -374,7 +374,7 @@ function PainelTab({ products, sellers, settlements, alertList }) {
 /* =====================================================================
    ESTOQUE
 ===================================================================== */
-function EstoqueTab({ products, onEdit, onDelete }) {
+function EstoqueTab({ products, onEdit, onDelete }: any) {
   return (
     <div className="px-5 pt-5 pb-6 flex flex-col gap-3">
       {products.length === 0 ? (
@@ -402,16 +402,16 @@ function EstoqueTab({ products, onEdit, onDelete }) {
   );
 }
 
-function ProductSheet({ open, editing, onClose, onSave }) {
+function ProductSheet({ open, editing, onClose, onSave }: any) {
   const [quantidade, setQuantidade] = useState(0);
   useEffect(() => { if (open) setQuantidade(editing ? editing.estoqueAtual : 0); }, [open, editing]);
   function handleSubmit(e) {
     e.preventDefault();
     const fd = new FormData(e.target);
-    const minimoRaw = fd.get("estoqueMinimo");
+    const minimoRaw = fd.get("estoqueMinimo") as string;
     onSave({
       nome: (fd.get("nome") || "").toString().trim(),
-      valor: parseFloat(fd.get("valor")) || 0,
+      valor: parseFloat(fd.get("valor") as string) || 0,
       estoqueAtual: Number(quantidade) || 0,
       estoqueMinimo: minimoRaw ? parseInt(minimoRaw, 10) || 0 : 0,
     });
@@ -435,7 +435,7 @@ function ProductSheet({ open, editing, onClose, onSave }) {
   );
 }
 
-function ConfirmDeleteSheet({ open, productName, onClose, onConfirm }) {
+function ConfirmDeleteSheet({ open, productName, onClose, onConfirm }: any) {
   return (
     <Sheet open={open} onOpenChange={(o) => { if (!o) onClose(); }}>
       <SheetContent>
@@ -453,7 +453,7 @@ function ConfirmDeleteSheet({ open, productName, onClose, onConfirm }) {
 /* =====================================================================
    VENDEDORES
 ===================================================================== */
-function SellerCard({ seller, faturamento, onOpen }) {
+function SellerCard({ seller, faturamento, onOpen }: any) {
   const ativo = seller.ativo !== false;
   return (
     <button onClick={() => onOpen(seller.id)} className={cn("w-full text-left rounded-2xl border border-white/10 bg-white/5 p-4 flex items-center gap-3 transition-colors hover:bg-white/10", !ativo && "opacity-50")}>
@@ -475,7 +475,7 @@ function SellerCard({ seller, faturamento, onOpen }) {
   );
 }
 
-function VendedoresTab({ sellers, settlements, onOpenDetail }) {
+function VendedoresTab({ sellers, settlements, onOpenDetail }: any) {
   const [filtro, setFiltro] = useState("ativos");
   const filtered = sellers.filter((v) => {
     const ativo = v.ativo !== false;
@@ -501,7 +501,7 @@ function VendedoresTab({ sellers, settlements, onOpenDetail }) {
   );
 }
 
-function SellerFormSheet({ open, onClose, onSave }) {
+function SellerFormSheet({ open, onClose, onSave }: any) {
   function handleSubmit(e) {
     e.preventDefault();
     const fd = new FormData(e.target);
@@ -522,7 +522,7 @@ function SellerFormSheet({ open, onClose, onSave }) {
   );
 }
 
-function AllocateSheet({ open, seller, products, onClose, onSave, showToast }) {
+function AllocateSheet({ open, seller, products, onClose, onSave, showToast }: any) {
   const [produtoId, setProdutoId] = useState("");
   const [quantidade, setQuantidade] = useState(1);
   useEffect(() => { if (open) { setProdutoId(""); setQuantidade(1); } }, [open]);
@@ -562,7 +562,7 @@ function AllocateSheet({ open, seller, products, onClose, onSave, showToast }) {
 /* =====================================================================
    CONTAS — agrupado por vendedor, com visão macro
 ===================================================================== */
-function ContasTab({ sellers, allocations, settlements, onOpenSeller }) {
+function ContasTab({ sellers, allocations, settlements, onOpenSeller }: any) {
   // monta linha por vendedor: pendências, faturamento, divergência acumulada
   const linhas = sellers.map((v) => {
     const abertos = allocations.filter((a) => a.vendedorId === v.id && a.status === "aberto");
@@ -623,7 +623,7 @@ function ContasTab({ sellers, allocations, settlements, onOpenSeller }) {
 }
 
 /* Detalhe do vendedor — visão macro + histórico + acertar */
-function SellerDetailSheet({ open, seller, products, allocations, settlements, onClose, onAllocate, onSettle, onToggleActive }) {
+function SellerDetailSheet({ open, seller, products, allocations, settlements, onClose, onAllocate, onSettle, onToggleActive }: any) {
   if (!seller) return null;
   const ativo = seller.ativo !== false;
   const abertos = allocations.filter((a) => a.vendedorId === seller.id && a.status === "aberto").sort((a, b) => b.data.localeCompare(a.data));
@@ -741,10 +741,10 @@ function SellerDetailSheet({ open, seller, products, allocations, settlements, o
   );
 }
 
-function SettlementSheet({ open, allocation, seller, product, onClose, onSave }) {
+function SettlementSheet({ open, allocation, seller, product, onClose, onSave }: any) {
   const [vendida, setVendida] = useState(0);
   const [devolvida, setDevolvida] = useState(0);
-  const [recebido, setRecebido] = useState(0);
+  const [recebido, setRecebido] = useState<number | string>(0);
   useEffect(() => { if (open) { setVendida(0); setDevolvida(0); setRecebido(0); } }, [open, allocation?.id]);
   if (!allocation) return null;
   const preco = allocation.precoUnitario || product?.valor || 0;
@@ -787,7 +787,7 @@ const NAV_ITEMS = [
   { id: "contas", label: "Contas", icon: ClipboardCheck },
 ];
 
-function TopBar({ title, onSignOut }) {
+function TopBar({ title, onSignOut }: any) {
   return (
     <div className="shrink-0 border-b border-white/10 px-5 pt-5 pb-4 flex items-center gap-3">
       <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shrink-0">
@@ -804,7 +804,7 @@ function TopBar({ title, onSignOut }) {
   );
 }
 
-function BottomNav({ tab, setTab, pendingCount }) {
+function BottomNav({ tab, setTab, pendingCount }: any) {
   return (
     <nav className="shrink-0 border-t border-white/10 bg-zinc-950/50 px-2 pt-2 pb-4 flex items-stretch justify-between">
       {NAV_ITEMS.map((item) => {
@@ -826,7 +826,7 @@ function BottomNav({ tab, setTab, pendingCount }) {
   );
 }
 
-function FAB({ onClick }) {
+function FAB({ onClick }: any) {
   return (
     <button onClick={onClick} className="absolute bottom-24 right-5 z-30 h-14 w-14 rounded-2xl bg-emerald-400 text-emerald-950 shadow-lg shadow-emerald-400/30 flex items-center justify-center active:scale-90 transition-transform hover:bg-emerald-300">
       <Plus className="h-6 w-6" strokeWidth={2.5} />
@@ -839,14 +839,14 @@ export default function App() {
   const supabase = createClient()
 
   const [loading, setLoading] = useState(true)
-  const [products, setProducts] = useState([])
-  const [sellers, setSellers] = useState([])
-  const [allocations, setAllocations] = useState([])
-  const [settlements, setSettlements] = useState([])
+  const [products, setProducts] = useState<any[]>([])
+  const [sellers, setSellers] = useState<any[]>([])
+  const [allocations, setAllocations] = useState<any[]>([])
+  const [settlements, setSettlements] = useState<any[]>([])
 
   const [tab, setTab] = useState('painel')
-  const [sheet, setSheet] = useState(null)
-  const [toasts, setToasts] = useState([])
+  const [sheet, setSheet] = useState<any>(null)
+  const [toasts, setToasts] = useState<any[]>([])
 
   // ——— Carregamento inicial ———
   useEffect(() => { loadData() }, [])
@@ -872,8 +872,8 @@ export default function App() {
     router.refresh()
   }
 
-  const productById = (id) => products.find((p) => p.id === id)
-  const sellerById = (id) => sellers.find((s) => s.id === id)
+  const productById = (id: any) => products.find((p: any) => p.id === id)
+  const sellerById = (id: any) => sellers.find((s: any) => s.id === id)
   const alertList = products.filter((p) => p.estoqueMinimo > 0 && p.estoqueAtual <= p.estoqueMinimo).sort((a, b) => a.estoqueAtual / a.estoqueMinimo - b.estoqueAtual / b.estoqueMinimo)
   const pendingCount = allocations.filter((a) => a.status === 'aberto').length
 
